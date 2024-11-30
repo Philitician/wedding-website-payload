@@ -26,9 +26,8 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 }
 
 export const plugins: Plugin[] = [
-  ...(process.env.VERCEL_ENV === 'development'
-    ? []
-    : [
+  ...(process.env.NODE_ENV === 'production'
+    ? [
         vercelBlobStorage({
           enabled: true,
           collections: {
@@ -36,7 +35,8 @@ export const plugins: Plugin[] = [
           },
           token: process.env.BLOB_READ_WRITE_TOKEN as string,
         }),
-      ]),
+      ]
+    : []),
   redirectsPlugin({
     collections: ['pages', 'posts'],
     overrides: {
